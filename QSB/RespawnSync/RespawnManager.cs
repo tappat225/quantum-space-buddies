@@ -162,9 +162,9 @@ public class RespawnManager : MonoBehaviour, IAddComponentOnStart
 
 		var deadPlayersCount = QSBPlayerManager.PlayerList.Count(x => x.IsDead);
 
-		// PlayerDeathMessage is broadcast to every peer, so let the host make the
-		// all-dead decision once. If every client sends EndLoopMessage here, the
-		// duplicate forced deaths can race before the server state is updated.
+		// The host receives every PlayerDeathMessage, so it can make the all-dead
+		// decision once. Otherwise, duplicate EndLoopMessages can race before the
+		// server state is updated and trigger multiple forced deaths.
 		if (QSBCore.IsHost && deadPlayersCount == QSBPlayerManager.PlayerList.Count)
 		{
 			new EndLoopMessage().Send();
